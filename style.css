@@ -1,0 +1,8 @@
+.score{
+    position: absolute;
+    top:10px;
+    left:50px;
+    font-size: 2rem;
+    color:white;
+    font-family: sans-serif;
+}
