@@ -24,7 +24,7 @@ trees[0] = {
 const spikes = [];
 spikes[0] = {
     x: canvas.width,
-    y: canvas.height - ground.height + 30
+    y: canvas.height - ground.height + 50
 }
 const fruits = [];
 fruits[0] = {
@@ -36,6 +36,9 @@ let charM = true;
 let charC = 0;
 let charY = 430;
 let keyPressed = {};
+let moveBG1 = '';
+let moveBG2 = '';
+
 function moveTree() {
     for (let i = 0; i < trees.length; i++) {
         trees[i].x -= 5;
@@ -59,58 +62,53 @@ function moveCharater() {
         charM = true;
     }
 }
+
+function movemove(){
+    moveBG1 = setTimeout(function () {
+        moveTree();
+        moveSpikes();
+        moveFruits();
+        moveCharater();
+    }, 30)
+}
 function keydownHandler(event) {
-    // if (event.key === 'ArrowRight') {
+    // event.preventDefault();
     keyPressed[event.key] = true;
     if (keyPressed['ArrowRight']) {
         if (charC % 30 === 0) {
             score++;
         }
-        moveTree();
-        moveSpikes();
-        moveFruits();
-        moveCharater();
+        movemove();
     }
-    // if (keyPressed['ArrowRight'] && keyPressed[' ']) {
-    //     event.preventDefault();
-    //     const jump = setInterval(function () {
-    //         charY -= 10;
-    //         if (charY == 350) {
-    //             clearInterval(jump);
-    //             setTimeout(function () {
-    //                 var land = setInterval(function () {
-    //                     charY+=10;
-    //                     if (charY == 430) {
-    //                         clearInterval(land)
-    //                     }
-    //                 }, 30)
-    //             }, 300)
-    //         }
-    //     }, 30)
+    if (keyPressed[' ']&&keyPressed['ArrowRight']) {
+        if (charC % 30 === 0) {
+            score++;
+        }
+            moveBG2 = setInterval(function(){
+            moveTree();
+            moveSpikes();
+            moveFruits();
+            moveCharater();
+        },30)
 
-    // }
-
-
-}
-function keypressHandler(event){
-    if (event.key === ' ') {
-        event.preventDefault();
         const jump = setInterval(function () {
-            charY --;
+            charY -= 10;
             if (charY == 350) {
                 clearInterval(jump);
                 setTimeout(function () {
                     var land = setInterval(function () {
-                        charY++ ;
+                        charY+=10;
                         if (charY == 430) {
                             clearInterval(land)
+                            clearInterval(moveBG2)
                         }
-                    }, 1)
-                }, 300)
+                    }, 30)
+                }, 400)
             }
-        }, 1)
-
+        }, 30)
+    
     }
+
 }
 function keyupHandler(event) {
     delete keyPressed[event.key];
@@ -138,28 +136,36 @@ function draw() {
     context.drawImage(ground, 0, groundY);
     //add spikes
     for (let i = 0; i < spikes.length; i++) {
-        context.drawImage(spike1, spikes[i].x, spikes[i].y);
+        context.drawImage(spike1, spikes[i].x, spikes[i].y, spike1.width - 30, spike1.height - 10);
         if (spikes[i].x === 600) {
             spikes.push({
                 x: canvas.width + 200,
-                y: canvas.height - ground.height + 30
+                y: canvas.height - ground.height + 50
             })
         }
     }
 
     //add fruits
-    // const randomF = Math.floor(Math.random()*5)+1;
     for (let i = 0; i < fruits.length; i++) {
         context.drawImage(fruit, fruits[i].x, fruits[i].y);
+        if (fruits[i].x === 400) {
+            // const randomF = Math.floor(Math.random()*5)+1;
+            fruits.push({
+                x: canvas.width,
+                y: canvas.height - ground.height - 70
+            }
+            )
+        }
     }
 
-
-    //character walk
+    //character walk Image
     if (charM) {
         context.drawImage(manr1, 80, charY, 80, 80);
     } else {
         context.drawImage(manr2, 80, charY, 80, 80);
     }
+
+    //gameover
 
     getScore();
     requestAnimationFrame(draw)
@@ -168,6 +174,6 @@ function init() {
     draw()
     document.addEventListener('keydown', keydownHandler)
     document.addEventListener('keyup', keyupHandler)
-    document.addEventListener('keypress',keypressHandler)
+    // document.addEventListener('keypress',keypressHandler)
 }
 init();
