@@ -19,17 +19,17 @@ fruit.src = 'images/fruit3.png';
 const trees = [];
 trees[0] = {
     x: 600,
-    y: canvas.height - ground.height - tree.height + 50
+    y: 130
 }
 const spikes = [];
 spikes[0] = {
     x: canvas.width,
-    y: canvas.height - ground.height + 50
+    y: 471
 }
 const fruits = [];
 fruits[0] = {
     x: canvas.width + 15,
-    y: canvas.height - ground.height - 70
+    y: 351
 }
 let score = 0;
 let charM = true;
@@ -131,6 +131,9 @@ function draw() {
                 y: canvas.height - ground.height - tree.height + 50
             })
         }
+        if(trees[i].x === -tree.width){
+            trees.shift();
+        }
     }
 
     context.drawImage(ground, 0, groundY);
@@ -142,6 +145,9 @@ function draw() {
                 x: canvas.width + 200,
                 y: canvas.height - ground.height + 50
             })
+        }
+        if(spikes[i].x === -spike1.width){
+            spikes.shift();
         }
     }
 
@@ -156,6 +162,9 @@ function draw() {
             }
             )
         }
+        if(fruits[i].x === -fruit.width){
+            fruits.shift();
+        }
     }
 
     //character walk Image
@@ -165,8 +174,11 @@ function draw() {
         context.drawImage(manr2, 80, charY, 80, 80);
     }
 
+    //eat fruits
+    
     //gameover
 
+    
     getScore();
     requestAnimationFrame(draw)
 }
