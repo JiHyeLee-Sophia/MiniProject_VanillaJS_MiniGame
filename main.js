@@ -170,7 +170,7 @@ function draw() {
     }
     //eat fruits
     if (
-      charX + manr1.width >= fruits[i].x &&
+      charX + manr1.width >= fruits[i].x+25 &&
       charX <= fruits[i].x + fruit.width &&
       charY <= fruits[i].y + fruit.height &&
       charY + manr1.height >= fruits[i].y
@@ -179,7 +179,7 @@ function draw() {
       eat.play();
       score++;
     } else if (
-      charX + manr2.width >= fruits[i].x &&
+      charX + manr2.width >= fruits[i].x+25 &&
       charX <= fruits[i].x + fruit.width &&
       charY <= fruits[i].y + fruit.height &&
       charY + manr2.height >= fruits[i].y
