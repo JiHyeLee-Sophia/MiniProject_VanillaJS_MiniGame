@@ -45,6 +45,11 @@ let charY = 430;
 let moveBG1 = "";
 let moveBG2 = "";
 let rightEvent = false;
+let jump = false;
+let jumpCnt = 0;
+let jumpUp = "";
+let jumpDown = "";
+let jumpStay = "";
 
 function moveTree() {
   for (let i = 0; i < trees.length; i++) {
@@ -77,26 +82,42 @@ function movemove() {
     moveCharater();
   }, 30);
 }
+function jumpUpnDown() {
+  const currentY = charY;
+  jumpUp = setInterval(function() {
+    charY -= 10;
+    if (currentY - charY === 80) {
+      clearInterval(jumpUp);
+      jumpStay = setTimeout(function() {
+        jumpDown = setInterval(function() {
+          charY += 10;
+          if (charY == 430) {
+            jumpCnt = 0;
+            clearInterval(jumpDown);
+          }
+        }, 30);
+      }, 200);
+    }
+  }, 30);
+}
+function jumpjump() {
+  jumpCnt++;
+  if (jumpCnt === 1) {
+    jumpUpnDown();
+  } else if (jumpCnt === 2) {
+    clearInterval(jumpUp);
+    clearInterval(jumpDown);
+    clearTimeout(jumpStay);
+    jumpUpnDown();
+  }
+}
 function keydownHandler(event) {
   event.preventDefault();
   if (event.key === "ArrowRight") {
     rightEvent = true;
   }
   if (event.key === " ") {
-    const jump = setInterval(function() {
-      charY -= 10;
-      if (charY == 350) {
-        clearInterval(jump);
-        setTimeout(function() {
-          let land = setInterval(function() {
-            charY += 10;
-            if (charY == 430) {
-              clearInterval(land);
-            }
-          }, 30);
-        }, 200);
-      }
-    }, 30);
+    jumpjump();
   }
 }
 function keyupHandler(event) {
@@ -170,7 +191,7 @@ function draw() {
     }
     //eat fruits
     if (
-      charX + manr1.width >= fruits[i].x+25 &&
+      charX + manr1.width >= fruits[i].x + 25 &&
       charX <= fruits[i].x + fruit.width &&
       charY <= fruits[i].y + fruit.height &&
       charY + manr1.height >= fruits[i].y
@@ -179,7 +200,7 @@ function draw() {
       eat.play();
       score++;
     } else if (
-      charX + manr2.width >= fruits[i].x+25 &&
+      charX + manr2.width >= fruits[i].x + 25 &&
       charX <= fruits[i].x + fruit.width &&
       charY <= fruits[i].y + fruit.height &&
       charY + manr2.height >= fruits[i].y
@@ -204,9 +225,10 @@ function draw() {
   getScore();
   requestAnimationFrame(draw);
 }
+
 function init() {
   draw();
-  gamestart.play();
+  // gamestart.play();
   document.addEventListener("keydown", keydownHandler);
   document.addEventListener("keyup", keyupHandler);
 }
