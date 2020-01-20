@@ -6,6 +6,10 @@ const tree = new Image();
 const manr1 = new Image();
 const manr2 = new Image();
 const spike1 = new Image();
+const manr1Src = "images/manr1.png";
+const manr2Src = "images/manr2.png";
+const manoldr1Src = "images/manoldr1.png";
+const manoldr2Src = "images/manoldr2.png";
 
 background.src = "images/background.png";
 ground.src = "images/ground.png";
@@ -13,6 +17,7 @@ tree.src = "images/tree.png";
 manr1.src = "images/manr1.png";
 manr2.src = "images/manr2.png";
 spike1.src = "images/spike monster B.png";
+
 
 //fruit count
 let fruitArray = [];
@@ -61,21 +66,19 @@ function eatFruit(i) {
   eat.play();
   score++;
   //if fruit is watermellon
-  if (fruitArray[i].src.indexOf("fruit1.png") === 29) {
-    manr1.src = "images/manoldr1.png";
-    manr2.src = "images/manoldr2.png";
-    console.log(manr1.src)
+  if (manr1.src.endsWith('manoldr1.png')) {
+    manr1.src = manoldr1Src;
+    manr2.src = manoldr2Src;
     setTimeout(() => {
-      manr1.src = "images/manr1.png";
-      manr2.src = "images/manr2.png";
-      console.log(manr1.src)
+      manr1.src = manr1Src
+      manr2.src = manr2Src
     }, 5000);
   }
   fruitArray.splice(i, 1);
   fruits.splice(i, 1);
 }
 function moveTree() {
-  if (manr1.src.indexOf("manoldr1.png") === 29) {
+  if (manr1.src.endsWith('manoldr1.png')) {
     for (let i = 0; i < trees.length; i++) {
       trees[i].x -= 2.5;
     }
@@ -86,7 +89,7 @@ function moveTree() {
   }
 }
 function moveSpikes() {
-  if (manr1.src.indexOf("manoldr1.png") === 29) {
+  if (manr1.src.endsWith('manoldr1.png')) {
     for (let i = 0; i < spikes.length; i++) {
       spikes[i].x -= 2.5;
     }
@@ -108,7 +111,7 @@ function addSpikes(randomSpike) {
   },1500)
 }
 function moveFruits() {
-  if (manr1.src.indexOf("manoldr1.png") === 29) {
+  if (manr1.src.endsWith('manoldr1.png')) {
     for (let i = 0; i < fruits.length; i++) {
       fruits[i].x -= 2.5;
     }
