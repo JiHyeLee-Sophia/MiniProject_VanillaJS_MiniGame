@@ -126,17 +126,10 @@ function addFruits(){
       }
       //next fruit location
       for (let j = 0; j < randomF; j++) {
-        if (j == 0) {
-          fruits.push({
-            x: canvas.width,
-            y: 351
-          });
-        } else {
           fruits.push({
             x: canvas.width + j * 40,
             y: 351
           });
-        }
       }
     fruitCnt = false;
   },800)
