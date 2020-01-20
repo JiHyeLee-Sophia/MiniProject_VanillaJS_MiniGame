@@ -64,9 +64,11 @@ function eatFruit(i) {
   if (fruitArray[i].src.indexOf("fruit1.png") === 29) {
     manr1.src = "images/manoldr1.png";
     manr2.src = "images/manoldr2.png";
+    console.log(manr1.src)
     setTimeout(() => {
       manr1.src = "images/manr1.png";
       manr2.src = "images/manr2.png";
+      console.log(manr1.src)
     }, 5000);
   }
   fruitArray.splice(i, 1);
