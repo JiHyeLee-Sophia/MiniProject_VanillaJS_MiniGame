@@ -61,6 +61,7 @@ let jumpDown = "";
 let jumpStay = "";
 let spikeCnt = false;
 let fruitCnt = false;
+let treeCnt = false;
 // a181878a!!
 function eatFruit(i) {
   eat.play();
@@ -88,6 +89,15 @@ function moveTree() {
     }
   }
 }
+function addTrees() {
+  setTimeout(()=>{
+        trees.push({
+        x: canvas.width,
+        y: 130
+      });
+    treeCnt = false;
+  },2000)
+}
 function moveSpikes() {
   if (manr1.src.endsWith('manoldr1.png')) {
     for (let i = 0; i < spikes.length; i++) {
@@ -100,6 +110,7 @@ function moveSpikes() {
   }
 }
 function addSpikes(randomSpike) {
+  let time = 600;
   setTimeout(()=>{
     for(let i=0; i<randomSpike;i++){
       spikes.push({
@@ -108,7 +119,7 @@ function addSpikes(randomSpike) {
       });
     }
     spikeCnt = false;
-  },1500)
+  },time)
 }
 function moveFruits() {
   if (manr1.src.endsWith('manoldr1.png')) {
@@ -223,11 +234,11 @@ function draw() {
   //draw tree
   for (let i = 0; i < trees.length; i++) {
     context.drawImage(tree, trees[i].x, trees[i].y);
-    if (trees[i].x === 300) {
-      trees.push({
-        x: canvas.width,
-        y: 130
-      });
+    if (trees[i].x >= 280 && trees[i].x <= 300) {
+      if (!treeCnt) {
+        addTrees();
+        treeCnt = true;
+      }
     }
   }
 
@@ -237,7 +248,7 @@ function draw() {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
     if (spikes[i].x >= 480 && spikes[i].x <= 500) {
       if (!spikeCnt) {
-        const randomSpike = Math.floor(Math.random()*2)+1;
+        const randomSpike = Math.floor(Math.random()*3)+1;
         addSpikes(randomSpike);
         spikeCnt = true;
       }
