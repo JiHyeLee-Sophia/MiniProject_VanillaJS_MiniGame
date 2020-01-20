@@ -27,6 +27,22 @@ body{
 .arrowright{
     margin-right: 10px;
 }
+.try{
+    width:150px;
+    height:100px;
+    background-color: rgba(250, 235, 215, 0.801);
+    font-weight: bold;
+    font-size: 2rem;
+    color : rgba(0, 0, 0, 0.555);
+    border: 5px solid rgba(255, 255, 255, 0.856);
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.try:hover{
+    transform: scale(1.10);
+    cursor: pointer;
+    outline: 0;
+}
 .gameover{
     position: absolute;
     width:800px;

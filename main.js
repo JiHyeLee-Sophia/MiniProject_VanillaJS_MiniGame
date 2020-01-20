@@ -134,12 +134,17 @@ function getScore() {
   const mainScore = document.querySelector(".score h1");
   mainScore.innerText = `Score : ${score}`;
 }
+function clickHandler(event){
+  event.preventDefault();
+  location.reload();
+}
 function gameOver() {
   const gameOVER = document.querySelector(".gameover");
+  const tryAgain = gameOVER.querySelector('.try');
   gameOVER.style.top = "150px";
   gameOVER.style.opacity = "1";
   rightEvent = false;
-  setTimeout(() => location.reload(), 2000);
+  tryAgain.addEventListener('click', clickHandler)
 }
 function draw() {
   const groundY = canvas.height - ground.height;
