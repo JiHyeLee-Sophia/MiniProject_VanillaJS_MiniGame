@@ -54,21 +54,92 @@ let jumpCnt = 0;
 let jumpUp = "";
 let jumpDown = "";
 let jumpStay = "";
-
+let spikeCnt = false;
+let fruitCnt = false;
+// a181878a!!
+function eatFruit(i) {
+  eat.play();
+  score++;
+  //if fruit is watermellon
+  if (fruitArray[i].src.indexOf("fruit1.png") === 29) {
+    manr1.src = "images/manoldr1.png";
+    manr2.src = "images/manoldr2.png";
+    setTimeout(() => {
+      manr1.src = "images/manr1.png";
+      manr2.src = "images/manr2.png";
+    }, 5000);
+  }
+  fruitArray.splice(i, 1);
+  fruits.splice(i, 1);
+}
 function moveTree() {
-  for (let i = 0; i < trees.length; i++) {
-    trees[i].x -= 5;
+  if (manr1.src.indexOf("manoldr1.png") === 29) {
+    for (let i = 0; i < trees.length; i++) {
+      trees[i].x -= 2.5;
+    }
+  } else {
+    for (let i = 0; i < trees.length; i++) {
+      trees[i].x -= 5;
+    }
   }
 }
 function moveSpikes() {
-  for (let i = 0; i < spikes.length; i++) {
-    spikes[i].x -= 5;
+  if (manr1.src.indexOf("manoldr1.png") === 29) {
+    for (let i = 0; i < spikes.length; i++) {
+      spikes[i].x -= 2.5;
+    }
+  } else {
+    for (let i = 0; i < spikes.length; i++) {
+      spikes[i].x -= 5;
+    }
   }
 }
+function addSpikes(randomSpike) {
+  setTimeout(()=>{
+    for(let i=0; i<randomSpike;i++){
+      spikes.push({
+        x: canvas.width +spike1.width*i,
+        y: 471
+      });
+    }
+    spikeCnt = false;
+  },1500)
+}
 function moveFruits() {
-  for (let i = 0; i < fruits.length; i++) {
-    fruits[i].x -= 5;
+  if (manr1.src.indexOf("manoldr1.png") === 29) {
+    for (let i = 0; i < fruits.length; i++) {
+      fruits[i].x -= 2.5;
+    }
+  } else {
+    for (let i = 0; i < fruits.length; i++) {
+      fruits[i].x -= 5;
+    }
   }
+}
+function addFruits(){
+  setTimeout(()=>{
+    const arrayLength = fruitArray.length;
+      for (let j = 0; j < randomF; j++) {
+        const afterLength = arrayLength + j;
+        fruitArray[afterLength] = new Image();
+        fruitArray[afterLength].src = `images/fruit${randomF}.png`;
+      }
+      //next fruit location
+      for (let j = 0; j < randomF; j++) {
+        if (j == 0) {
+          fruits.push({
+            x: canvas.width,
+            y: 351
+          });
+        } else {
+          fruits.push({
+            x: canvas.width + j * 40,
+            y: 351
+          });
+        }
+      }
+    fruitCnt = false;
+  },800)
 }
 function moveCharater() {
   charC++;
@@ -134,23 +205,24 @@ function getScore() {
   const mainScore = document.querySelector(".score h1");
   mainScore.innerText = `Score : ${score}`;
 }
-function clickHandler(event){
+function clickHandler(event) {
   event.preventDefault();
   location.reload();
 }
 function gameOver() {
   const gameOVER = document.querySelector(".gameover");
-  const tryAgain = gameOVER.querySelector('.try');
+  const tryAgain = gameOVER.querySelector(".try");
   gameOVER.style.top = "150px";
   gameOVER.style.opacity = "1";
   rightEvent = false;
-  tryAgain.addEventListener('click', clickHandler)
+  tryAgain.style.display = "inline";
+  tryAgain.addEventListener("click", clickHandler);
 }
 function draw() {
   const groundY = canvas.height - ground.height;
   context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-  //add tree
+  //draw tree
   for (let i = 0; i < trees.length; i++) {
     context.drawImage(tree, trees[i].x, trees[i].y);
     if (trees[i].x === 300) {
@@ -162,14 +234,18 @@ function draw() {
   }
 
   context.drawImage(ground, 0, groundY);
-  //add spikes
+  //draw spikes
   for (let i = 0; i < spikes.length; i++) {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
-    if (spikes[i].x === 500) {
-      spikes.push({
-        x: canvas.width + 200,
-        y: 471
-      });
+    if (spikes[i].x >= 480 && spikes[i].x <= 500) {
+      if (!spikeCnt) {
+        const randomSpike = Math.floor(Math.random()*2)+1;
+        addSpikes(randomSpike);
+        spikeCnt = true;
+      }
+    }
+    if(spikes[i].x === -spike1.width){
+      spikes.splice(i,1);
     }
     //game over
     if (
@@ -194,27 +270,12 @@ function draw() {
     }
     randomF = Math.floor(Math.random() * 5) + 1;
     //set next fruit count and image
-    if (fruits[fruits.length-1].x === 400) {
-      const arrayLength = fruitArray.length;
-      for (let j = 0; j < randomF; j++) {
-        const afterLength = arrayLength + j;
-        fruitArray[afterLength] = new Image();
-        fruitArray[afterLength].src = `images/fruit${randomF}.png`;
-      }
-      //next fruit location
-      for (let j = 0; j < randomF; j++) {
-        if (j == 0) {
-          fruits.push({
-            x: canvas.width,
-            y: 351
-          });
-        } else {
-          fruits.push({
-            x: canvas.width + j * 40,
-            y: 351
-          });
-        }
-      }
+    const lastX = fruits[fruits.length - 1].x;
+    if (lastX>=380&&lastX <= 400) {
+      if(!fruitCnt){
+      addFruits();
+      fruitCnt=true;
+    }
     }
     //eat fruits
     for (let i = 0; i < fruitArray.length; i++) {
@@ -224,22 +285,14 @@ function draw() {
         charY <= fruits[i].y + fruitArray[i].height &&
         charY + manr1.height >= fruits[i].y
       ) {
-        // fruits[i].x = -50;
-        eat.play();
-        score++;
-        fruitArray.splice(i,1);
-        fruits.splice(i,1);
+        eatFruit(i);
       } else if (
         charX + manr2.width >= fruits[i].x + 25 &&
         charX <= fruits[i].x + fruitArray[i].width &&
         charY <= fruits[i].y + fruitArray[i].height &&
         charY + manr2.height >= fruits[i].y
       ) {
-        // fruits[i].x = -50;
-        eat.play();
-        score++;
-        fruitArray.splice(i,1);
-        fruits.splice(i,1);
+        eatFruit(i);
       }
     }
   }
@@ -250,11 +303,11 @@ function draw() {
   } else {
     context.drawImage(manr2, charX, charY);
   }
+
   //background moves by user key press
   if (rightEvent) {
     movemove();
   }
-
   getScore();
   requestAnimationFrame(draw);
 }
