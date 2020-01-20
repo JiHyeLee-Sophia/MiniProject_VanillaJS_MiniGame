@@ -6,7 +6,6 @@ const tree = new Image();
 const manr1 = new Image();
 const manr2 = new Image();
 const spike1 = new Image();
-const fruit = new Image();
 
 background.src = "images/background.png";
 ground.src = "images/ground.png";
@@ -14,7 +13,12 @@ tree.src = "images/tree.png";
 manr1.src = "images/manr1.png";
 manr2.src = "images/manr2.png";
 spike1.src = "images/spike monster B.png";
-fruit.src = "images/fruit3.png";
+
+//fruit count
+let fruitArray = [];
+fruitArray[0] = new Image();
+fruitArray[0].src = "images/fruit3.png";
+let randomF = 1;
 
 //audio
 const eat = new Audio();
@@ -156,7 +160,7 @@ function draw() {
   //add spikes
   for (let i = 0; i < spikes.length; i++) {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
-    if (spikes[i].x === 600) {
+    if (spikes[i].x === 500) {
       spikes.push({
         x: canvas.width + 200,
         y: 471
@@ -178,36 +182,60 @@ function draw() {
     }
   }
 
-  //add fruits
+  //set fruit location && count control
   for (let i = 0; i < fruits.length; i++) {
-    context.drawImage(fruit, fruits[i].x, fruits[i].y);
-    if (fruits[i].x === 400) {
-      // const randomF = Math.floor(Math.random()*5)+1;
-      // const fruitSrc = `images/fruit${randomF}.png`;
-      fruits.push({
-        x: canvas.width,
-        y: 351
-      });
+    for (let j = 0; j < fruitArray.length; j++) {
+      context.drawImage(fruitArray[j], fruits[j].x, fruits[j].y);
+    }
+    randomF = Math.floor(Math.random() * 5) + 1;
+    //set next fruit count and image
+    if (fruits[fruits.length-1].x === 400) {
+      const arrayLength = fruitArray.length;
+      for (let j = 0; j < randomF; j++) {
+        const afterLength = arrayLength + j;
+        fruitArray[afterLength] = new Image();
+        fruitArray[afterLength].src = `images/fruit${randomF}.png`;
+      }
+      //next fruit location
+      for (let j = 0; j < randomF; j++) {
+        if (j == 0) {
+          fruits.push({
+            x: canvas.width,
+            y: 351
+          });
+        } else {
+          fruits.push({
+            x: canvas.width + j * 40,
+            y: 351
+          });
+        }
+      }
     }
     //eat fruits
-    if (
-      charX + manr1.width >= fruits[i].x + 25 &&
-      charX <= fruits[i].x + fruit.width &&
-      charY <= fruits[i].y + fruit.height &&
-      charY + manr1.height >= fruits[i].y
-    ) {
-      fruits[i].x = -50;
-      eat.play();
-      score++;
-    } else if (
-      charX + manr2.width >= fruits[i].x + 25 &&
-      charX <= fruits[i].x + fruit.width &&
-      charY <= fruits[i].y + fruit.height &&
-      charY + manr2.height >= fruits[i].y
-    ) {
-      fruits[i].x = -50;
-      eat.play();
-      score++;
+    for (let i = 0; i < fruitArray.length; i++) {
+      if (
+        charX + manr1.width >= fruits[i].x + 25 &&
+        charX <= fruits[i].x + fruitArray[i].width &&
+        charY <= fruits[i].y + fruitArray[i].height &&
+        charY + manr1.height >= fruits[i].y
+      ) {
+        // fruits[i].x = -50;
+        eat.play();
+        score++;
+        fruitArray.splice(i,1);
+        fruits.splice(i,1);
+      } else if (
+        charX + manr2.width >= fruits[i].x + 25 &&
+        charX <= fruits[i].x + fruitArray[i].width &&
+        charY <= fruits[i].y + fruitArray[i].height &&
+        charY + manr2.height >= fruits[i].y
+      ) {
+        // fruits[i].x = -50;
+        eat.play();
+        score++;
+        fruitArray.splice(i,1);
+        fruits.splice(i,1);
+      }
     }
   }
 
@@ -228,7 +256,6 @@ function draw() {
 
 function init() {
   draw();
-  // gamestart.play();
   document.addEventListener("keydown", keydownHandler);
   document.addEventListener("keyup", keyupHandler);
 }
