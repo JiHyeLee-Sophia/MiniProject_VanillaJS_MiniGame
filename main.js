@@ -260,7 +260,7 @@ function draw() {
   //draw spikes
   for (let i = 0; i < spikes.length; i++) {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
-    if (spikes[i].x >= 480 && spikes[i].x <= 500) {
+    if (spikes[i].x >= 380 && spikes[i].x <= 390) {
       if (!spikes[i].next) {
         const randomSpike = Math.floor(Math.random() * 2) + 1;
         addSpikes(randomSpike,spikes[i]);
