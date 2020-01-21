@@ -3,14 +3,16 @@ const canvas = document.querySelector(".canvas"),
 const background = new Image();
 const ground = new Image();
 const tree = new Image();
-const manr1 = new Image();
-const manr2 = new Image();
 const spike1 = new Image();
-const manr1Src = "images/manr1.png";
-const manr2Src = "images/manr2.png";
-const manoldr1Src = "images/manoldr1.png";
-const manoldr2Src = "images/manoldr2.png";
+let manr1 = new Image();
+let manr2 = new Image();
+const manoldr1 = new Image();
+const manoldr2 = new Image();
 
+manr1.src="images/manr1.png";
+manr2.src="images/manr2.png";
+manoldr1.src = "images/manoldr1.png";
+manoldr2.src = "images/manoldr2.png";
 background.src = "images/background.png";
 ground.src = "images/ground.png";
 tree.src = "images/tree.png";
@@ -67,12 +69,14 @@ function eatFruit(i) {
   eat.play();
   score++;
   //if fruit is watermellon
-  if (manr1.src.endsWith('manoldr1.png')) {
-    manr1.src = manoldr1Src;
-    manr2.src = manoldr2Src;
+  if (manr1.src.endsWith('manr1.png')) {
+    const originalMan1 = manr1;
+    const originalMan2 = manr2;
+    manr1 = manoldr1;
+    manr2 = manoldr2;
     setTimeout(() => {
-      manr1.src = manr1Src
-      manr2.src = manr2Src
+      manr1 = originalMan1;
+      manr2 = originalMan2;
     }, 5000);
   }
   fruitArray.splice(i, 1);

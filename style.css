@@ -44,6 +44,9 @@ body{
     outline: 0;
     cursor: pointer;
 }
+.try:active{
+    transform: scale(1.00);
+}
 .gameover{
     position: absolute;
     width:800px;
