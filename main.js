@@ -114,7 +114,7 @@ function moveSpikes() {
   }
 }
 function addSpikes(randomSpike) {
-  let time = 600;
+  let time = 500;
   setTimeout(()=>{
     for(let i=0; i<randomSpike;i++){
       spikes.push({
@@ -252,7 +252,7 @@ function draw() {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
     if (spikes[i].x >= 480 && spikes[i].x <= 500) {
       if (!spikeCnt) {
-        const randomSpike = Math.floor(Math.random()*3)+1;
+        const randomSpike = Math.floor(Math.random()*2)+1;
         addSpikes(randomSpike);
         spikeCnt = true;
       }
