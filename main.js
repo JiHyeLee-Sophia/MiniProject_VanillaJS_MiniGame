@@ -8,11 +8,15 @@ let manr1 = new Image();
 let manr2 = new Image();
 const manoldr1 = new Image();
 const manoldr2 = new Image();
+const manredr1 = new Image();
+const manredr2 = new Image();
 
 manr1.src = "images/manr1.png";
 manr2.src = "images/manr2.png";
 manoldr1.src = "images/manoldr1.png";
 manoldr2.src = "images/manoldr2.png";
+manredr1.src = "images/manfirer1.png";
+manredr2.src = "images/manfirer2.png";
 background.src = "images/background.png";
 ground.src = "images/ground.png";
 tree.src = "images/tree.png";
@@ -24,7 +28,6 @@ spike1.src = "images/spike monster B.png";
 let fruitArray = [];
 fruitArray[0] = new Image();
 fruitArray[0].src = "images/fruit3.png";
-let randomF = 1;
 
 //audio
 const eat = new Audio();
@@ -48,7 +51,7 @@ const fruits = [];
 fruits[0] = {
   x: canvas.width + 15,
   y: 351,
-  next:false
+  next: false
 };
 let score = 0;
 let charM = true;
@@ -63,16 +66,24 @@ let jumpCnt = 0;
 let jumpUp = "";
 let jumpDown = "";
 let jumpStay = "";
-// a181878a!!
+
 function eatFruit(i) {
   eat.play();
   score++;
   //if fruit is watermellon
+  const originalMan1 = manr1;
+  const originalMan2 = manr2;
   if (fruitArray[i].src.endsWith("fruit1.png")) {
-    const originalMan1 = manr1;
-    const originalMan2 = manr2;
     manr1 = manoldr1;
     manr2 = manoldr2;
+    setTimeout(() => {
+      manr1 = originalMan1;
+      manr2 = originalMan2;
+    }, 5000);
+    //if fruit is icecream
+  } else if (fruitArray[i].src.endsWith("fruit0.png")) {
+    manr1 = manredr1;
+    manr2 = manredr2;
     setTimeout(() => {
       manr1 = originalMan1;
       manr2 = originalMan2;
@@ -82,9 +93,13 @@ function eatFruit(i) {
   fruits.splice(i, 1);
 }
 function moveTree() {
-  if (manr1.src.endsWith("manoldr1.png")) {
+  if (manr1===manredr1) {
     for (let i = 0; i < trees.length; i++) {
-      trees[i].x -= 2.5;
+      trees[i].x -= 10;
+    }
+  }else if (manr1===manoldr1) {
+    for (let i = 0; i < trees.length; i++) {
+      trees[i].x -= 3;
     }
   } else {
     for (let i = 0; i < trees.length; i++) {
@@ -101,9 +116,14 @@ function addTrees(tree) {
   tree.next = true;
 }
 function moveSpikes() {
-  if (manr1.src.endsWith("manoldr1.png")) {
+  if (manr1===manredr1) {
+    for (let i = 0; i < trees.length; i++) {
+      spikes[i].x -= 10;
+    }
+  }else if (manr1===manoldr1) {
+  // if (manr1.src.endsWith("manoldr1.png")) {
     for (let i = 0; i < spikes.length; i++) {
-      spikes[i].x -= 2.5;
+      spikes[i].x -= 3;
     }
   } else {
     for (let i = 0; i < spikes.length; i++) {
@@ -113,13 +133,13 @@ function moveSpikes() {
 }
 function addSpikes(randomSpike, spike) {
   for (let i = 0; i < randomSpike; i++) {
-    if(i ===0){
+    if (i === 0) {
       spikes.push({
         x: canvas.width + spike1.width * i,
         y: 471,
         next: false
       });
-    }else{
+    } else {
       spikes.push({
         x: canvas.width + spike1.width * i,
         y: 471,
@@ -130,9 +150,13 @@ function addSpikes(randomSpike, spike) {
   spike.next = true;
 }
 function moveFruits() {
-  if (manr1.src.endsWith("manoldr1.png")) {
+  if (manr1===manredr1) {
+    for (let i = 0; i < trees.length; i++) {
+      fruits[i].x -= 10;
+    }
+  }else if (manr1===manoldr1) {
     for (let i = 0; i < fruits.length; i++) {
-      fruits[i].x -= 2.5;
+      fruits[i].x -= 3;
     }
   } else {
     for (let i = 0; i < fruits.length; i++) {
@@ -141,29 +165,37 @@ function moveFruits() {
   }
 }
 function addFruits(fruit) {
-    const arrayLength = fruitArray.length;
-    for (let j = 0; j < randomF; j++) {
-      const afterLength = arrayLength + j;
-      fruitArray[afterLength] = new Image();
-      fruitArray[afterLength].src = `images/fruit${randomF}.png`;
+  const randomF = Math.floor(Math.random() * 5) + 1;
+  const arrayLength = fruitArray.length;
+  let num = 0;
+  for (let j = 0; j < randomF; j++) {
+    if (randomF === 1) {
+      num = Math.floor(Math.random() * 2);
+    } else {
+      num = randomF;
     }
-    //next fruit location
-    for (let j = 0; j < randomF; j++) {
-      if(j===0){
-        fruits.push({
-          x: canvas.width + j * 40,
-          y: 351,
-          next:false
-        });
-      }else{
-        fruits.push({
-          x: canvas.width + j * 40,
-          y: 351,
-          next:true
-        });
-      }
+    const afterLength = arrayLength + j;
+    fruitArray[afterLength] = new Image();
+    fruitArray[afterLength].src = `images/fruit${num}.png`;
+  }
+  //next fruit location
+  for (let j = 0; j < randomF; j++) {
+    if (j === 0) {
+      fruits.push({
+        x: canvas.width + j * 40,
+        y: 351,
+        next: false
+      });
+    } else {
+      fruits.push({
+        x: canvas.width + j * 40,
+        y: 351,
+        next: true
+      });
     }
-    fruit.next = true;
+  }
+
+  fruit.next = true;
 }
 function moveCharater() {
   charC++;
@@ -216,7 +248,7 @@ function keydownHandler(event) {
     rightEvent = true;
   }
   if (event.key === " ") {
-    jumpjump();
+      jumpjump();
   }
 }
 function keyupHandler(event) {
@@ -263,7 +295,7 @@ function draw() {
     if (spikes[i].x >= 380 && spikes[i].x <= 390) {
       if (!spikes[i].next) {
         const randomSpike = Math.floor(Math.random() * 2) + 1;
-        addSpikes(randomSpike,spikes[i]);
+        addSpikes(randomSpike, spikes[i]);
       }
     }
     if (spikes[i].x === -spike1.width) {
@@ -275,13 +307,17 @@ function draw() {
       charX <= spikes[i].x + spike1.width - 20 &&
       charY + manr1.height >= spikes[i].y + 20
     ) {
-      gameOver();
+      if(manr1!==manredr1){
+        gameOver();
+      }
     } else if (
       charX + manr2.width >= spikes[i].x + 20 &&
       charX <= spikes[i].x + spike1.width - 20 &&
       charY + manr2.height >= spikes[i].y + 20
     ) {
-      gameOver();
+      if(manr2!==manredr2){
+        gameOver();
+      }
     }
   }
 
@@ -290,10 +326,8 @@ function draw() {
     for (let j = 0; j < fruitArray.length; j++) {
       context.drawImage(fruitArray[j], fruits[j].x, fruits[j].y);
     }
-    randomF = Math.floor(Math.random() * 5) + 1;
     //set next fruit count and image
-    const lastX = fruits[fruits.length - 1].x;
-    if (lastX >= 380 && lastX <= 400) {
+    if (fruits[i].x >= 380 && fruits[i].x <= 400) {
       if (!fruits[i].next) {
         addFruits(fruits[i]);
       }
@@ -319,6 +353,7 @@ function draw() {
   }
 
   //character walk Image
+  // manr1 = manredr
   if (charM) {
     context.drawImage(manr1, charX, charY);
   } else {
