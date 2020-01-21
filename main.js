@@ -69,7 +69,7 @@ function eatFruit(i) {
   eat.play();
   score++;
   //if fruit is watermellon
-  if (manr1.src.endsWith('manr1.png')) {
+  if (fruitArray[i].src.endsWith('fruit1.png')) {
     const originalMan1 = manr1;
     const originalMan2 = manr2;
     manr1 = manoldr1;
