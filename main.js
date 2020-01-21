@@ -80,7 +80,7 @@ function eatFruit(i) {
       manr1 = originalMan1;
       manr2 = originalMan2;
     }, 5000);
-    //if fruit is icecream
+  //if fruit is icecream
   } else if (fruitArray[i].src.endsWith("fruit0.png")) {
     manr1 = manredr1;
     manr2 = manredr2;
@@ -117,7 +117,7 @@ function addTrees(tree) {
 }
 function moveSpikes() {
   if (manr1===manredr1) {
-    for (let i = 0; i < trees.length; i++) {
+    for (let i = 0; i < spikes.length; i++) {
       spikes[i].x -= 10;
     }
   }else if (manr1===manoldr1) {
@@ -151,7 +151,7 @@ function addSpikes(randomSpike, spike) {
 }
 function moveFruits() {
   if (manr1===manredr1) {
-    for (let i = 0; i < trees.length; i++) {
+    for (let i = 0; i < fruits.length; i++) {
       fruits[i].x -= 10;
     }
   }else if (manr1===manoldr1) {
