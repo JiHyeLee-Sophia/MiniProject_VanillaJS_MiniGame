@@ -10,13 +10,12 @@ const manoldr1 = new Image();
 const manoldr2 = new Image();
 const manredr1 = new Image();
 const manredr2 = new Image();
-
+manredr1.src = "images/manfirer1.png";
+manredr2.src = "images/manfirer2.png";
 manr1.src = "images/manr1.png";
 manr2.src = "images/manr2.png";
 manoldr1.src = "images/manoldr1.png";
 manoldr2.src = "images/manoldr2.png";
-manredr1.src = "images/manfirer1.png";
-manredr2.src = "images/manfirer2.png";
 background.src = "images/background.png";
 ground.src = "images/ground.png";
 tree.src = "images/tree.png";
@@ -66,29 +65,42 @@ let jumpCnt = 0;
 let jumpUp = "";
 let jumpDown = "";
 let jumpStay = "";
-
+let fromOldtoOrigin = "";
+let fromRedtoOrigin = "";
+function settingTimeout(changeTor1, changeTor2) {
+  //reset previous timeout
+  if (fromRedtoOrigin) {
+    clearTimeout(fromRedtoOrigin);
+  } else if (fromOldtoOrigin) {
+    clearTimeout(fromOldtoOrigin);
+  }
+  //change character image
+  manr1 = changeTor1;
+  manr2 = changeTor2;
+}
 function eatFruit(i) {
-  eat.play();
-  score++;
-  //if fruit is watermellon
   const originalMan1 = new Image();
   const originalMan2 = new Image();
   originalMan1.src = "images/manr1.png";
   originalMan2.src = "images/manr2.png";
+
+  eat.play();
+  score++;
+  //if fruit is watermellon
   if (fruitArray[i].src.endsWith("fruit1.png")) {
-    manr1 = manoldr1;
-    manr2 = manoldr2;
-    setTimeout(() => {
+    settingTimeout(manoldr1, manoldr2);
+    fromOldtoOrigin = setTimeout(() => {
       manr1 = originalMan1;
       manr2 = originalMan2;
+      fromOldtoOrigin = "";
     }, 5000);
     //if fruit is icecream
   } else if (fruitArray[i].src.endsWith("fruit0.png")) {
-    manr1 = manredr1;
-    manr2 = manredr2;
-    setTimeout(() => {
+    settingTimeout(manredr1, manredr2);
+    fromRedtoOrigin = setTimeout(() => {
       manr1 = originalMan1;
       manr2 = originalMan2;
+      fromRedtoOrigin = "";
     }, 5000);
   }
   fruitArray.splice(i, 1);
@@ -255,7 +267,7 @@ function draw() {
 
   //draw ground
   context.drawImage(ground, 0, groundY);
-  
+
   //draw spikes
   for (let i = 0; i < spikes.length; i++) {
     context.drawImage(spike1, spikes[i].x, spikes[i].y);
@@ -271,15 +283,14 @@ function draw() {
       spikes.splice(i, 1);
     }
     //game over
-    if ((
-      charX + manr1.width >= spikes[i].x + 20 &&
-      charX <= spikes[i].x + spike1.width - 20 &&
-      charY + manr1.height >= spikes[i].y + 20
-    ) || (
-      charX + manr2.width >= spikes[i].x + 20 &&
-      charX <= spikes[i].x + spike1.width - 20 &&
-      charY + manr2.height >= spikes[i].y + 20
-    )) {
+    if (
+      (charX + manr1.width >= spikes[i].x + 20 &&
+        charX <= spikes[i].x + spike1.width - 20 &&
+        charY + manr1.height >= spikes[i].y + 20) ||
+      (charX + manr2.width >= spikes[i].x + 20 &&
+        charX <= spikes[i].x + spike1.width - 20 &&
+        charY + manr2.height >= spikes[i].y + 20)
+    ) {
       if (manr1 !== manredr1) {
         gameOver();
       }
@@ -291,17 +302,16 @@ function draw() {
     for (let j = 0; j < fruitArray.length; j++) {
       context.drawImage(fruitArray[j], fruits[j].x, fruits[j].y);
       //eat fruit
-      if ((
-        charX + manr1.width >= fruits[i].x + 25 &&
-        charX <= fruits[i].x + fruitArray[i].width &&
-        charY <= fruits[i].y + fruitArray[i].height &&
-        charY + manr1.height >= fruits[i].y
-      ) || (
-        charX + manr2.width >= fruits[i].x + 25 &&
-        charX <= fruits[i].x + fruitArray[i].width &&
-        charY <= fruits[i].y + fruitArray[i].height &&
-        charY + manr2.height >= fruits[i].y
-      )) {
+      if (
+        (charX + manr1.width >= fruits[i].x + 25 &&
+          charX <= fruits[i].x + fruitArray[i].width &&
+          charY <= fruits[i].y + fruitArray[i].height &&
+          charY + manr1.height >= fruits[i].y) ||
+        (charX + manr2.width >= fruits[i].x + 25 &&
+          charX <= fruits[i].x + fruitArray[i].width &&
+          charY <= fruits[i].y + fruitArray[i].height &&
+          charY + manr2.height >= fruits[i].y)
+      ) {
         eatFruit(i);
       }
     }
