@@ -343,6 +343,7 @@ function gameStartHandler(e) {
   e.preventDefault();
   document.querySelector(".coverCanvas").style.display="none"
   e.target.parentNode.style.display = "none";
+  gamestart.play();
   document.addEventListener("keydown", keydownHandler);
   document.addEventListener("keyup", keyupHandler);
 }
