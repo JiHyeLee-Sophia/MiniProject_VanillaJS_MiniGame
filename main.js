@@ -348,8 +348,9 @@ function gameStartHandler(e) {
   document.addEventListener("keyup", keyupHandler);
 }
 function init() {
-  document.querySelector(".start").addEventListener("click", gameStartHandler);
-
+  const start = document.querySelector('.start')
+  window.addEventListener('load', e=>start.style.display="inline")
+  start.addEventListener("click", gameStartHandler);
   draw();
 }
 init();
