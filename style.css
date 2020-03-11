@@ -4,6 +4,14 @@ body{
     font-family: sans-serif;
     color:white;
 }
+.coverCanvas{
+    background-color: rgba(165, 163, 160, 0.644);
+    width:800px;
+    height:600px;
+    position: absolute;
+    top:0;
+    left:0;
+}
 .container{
     width:700px;
     margin:0;
@@ -27,7 +35,8 @@ body{
 .arrowright{
     margin-right: 10px;
 }
-.try{
+.try,
+.start{
     width:150px;
     height:100px;
     background-color: rgba(250, 235, 215, 0.801);
@@ -39,15 +48,21 @@ body{
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     display:none;
 }
-.try:hover{
+.start{
+    display:inline;
+}
+.try:hover,
+.start:hover{
     transform: scale(1.10);
     outline: 0;
     cursor: pointer;
 }
-.try:active{
+.try:active,
+.start:active{
     transform: scale(1.00);
 }
-.gameover{
+.gameover,
+.gamestart{
     position: absolute;
     width:800px;
     top:80px;
@@ -55,6 +70,10 @@ body{
     font-size: 3rem;
     opacity:0;
     transition: opacity .6s ease-in;
+}
+.gamestart{
+    opacity:1;
+    top:200px;
 }
 .tip{
     color:black;

@@ -339,9 +339,16 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-function init() {
-  draw();
+function gameStartHandler(e) {
+  e.preventDefault();
+  document.querySelector(".coverCanvas").style.display="none"
+  e.target.parentNode.style.display = "none";
   document.addEventListener("keydown", keydownHandler);
   document.addEventListener("keyup", keyupHandler);
+}
+function init() {
+  document.querySelector(".start").addEventListener("click", gameStartHandler);
+
+  draw();
 }
 init();
