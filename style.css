@@ -76,3 +76,10 @@ body{
     color:black;
     margin:20px;
 }
+.comment {
+    width:100%;
+}
+#disqus_thread{
+    margin:10px;
+    width:800px;
+}
